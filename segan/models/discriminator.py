@@ -91,7 +91,7 @@ class Discriminator(Model):
             # build sincnet module as first layer
             self.sinc_conv = SincConv(fmaps[0] // 2,
                                       251, 16e3, padding='SAME')
-            inp = fmaps[0]
+            ninp = fmaps[0]
             fmaps = fmaps[1:]
         self.enc_blocks = nn.ModuleList()
         for pi, (fmap, pool) in enumerate(zip(fmaps,

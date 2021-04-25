@@ -3,8 +3,8 @@
   "d_pretrained_ckpt": null,
   "g_pretrained_ckpt": null,
   "cache_dir": "data_tmp",
-  "clean_trainset": "data_veu4/expanded_segan1_additive/clean_trainset",
-  "noisy_trainset": "data_veu4/expanded_segan1_additive/noisy_trainset",
+  "clean_trainset": "data/clean_trainset_wav_16k",
+  "noisy_trainset": "data/noisy_trainset_wav_16k",
   "clean_valset": null,
   "noisy_valset": null,
   "h5_data_root": null,
@@ -13,7 +13,7 @@
   "seed": 111,
   "epoch": 100,
   "patience": 100,
-  "batch_size": 300,
+  "batch_size": 100,
   "save_freq": 50,
   "slice_size": 16384,
   "opt": "rmsprop",
@@ -26,7 +26,7 @@
   "max_samples": null,
   "eval_workers": 2,
   "slice_workers": 1,
-  "num_workers": 3,
+  "num_workers": 1,
   "no_cuda": false,
   "random_scale": [
     1
@@ -36,9 +36,9 @@
   "wsegan": false,
   "aewsegan": false,
   "vanilla_gan": false,
-  "no_bias": false,
+  "no_bias": true,
   "n_fft": 2048,
-  "l1_loss": false,
+  "reg_loss": "l1_loss",
   "skip_merge": "concat",
   "skip_type": "alpha",
   "skip_init": "one",
@@ -88,5 +88,5 @@
   "dnorm_type": "bnorm",
   "phase_shift": 5,
   "sinc_conv": false,
-  "bias": true
+  "bias": false
 }

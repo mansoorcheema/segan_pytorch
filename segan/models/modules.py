@@ -289,7 +289,7 @@ class SincConv(nn.Module):
                             self.Filt_dim // 2), mode='reflect')
         else:
             x_p = x
-        out = F.conv1d(x_p, filters.view(self.N_filt, 1, self.Filt_dim))
+        out = F.conv1d(x_p, filters.view(self.N_filt, 1, self.Filt_dim), stride=4)
         return out
 
 class CombFilter(nn.Module):

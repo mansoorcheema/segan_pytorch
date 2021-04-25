@@ -110,9 +110,9 @@ if __name__ == '__main__':
                              '(Def: None).')
     parser.add_argument('--cache_dir', type=str, default='data_cache')
     parser.add_argument('--clean_trainset', type=str,
-                        default='data/clean_trainset')
+                        default='data/clean_trainset_wav_16k')
     parser.add_argument('--noisy_trainset', type=str,
-                        default='data/noisy_trainset')
+                        default='data/noisy_trainset_wav_16k')
     parser.add_argument('--clean_valset', type=str,
                         default=None)#'data/clean_valset')
     parser.add_argument('--noisy_valset', type=str,
