@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CKPT_PATH="ckpt_segan+sinc"
+CKPT_PATH="ckpt_segan+sinc_discrim_gen_filter100/"
 
 # please specify the path to your G model checkpoint
 # as in weights_G-EOE_<iter>.ckpt
@@ -12,7 +12,7 @@ TEST_FILES_PATH='data/noisy_testset_wav_16k'
 
 # please specify the output folder where cleaned files
 # will be saved
-SAVE_PATH="synth_segan+sinc"
+SAVE_PATH="synth_segan+sinc_discrim_gen_filter100"
 
 python -u clean.py --g_pretrained_ckpt $CKPT_PATH/$G_PRETRAINED_CKPT \
 	--test_files $TEST_FILES_PATH --cfg_file $CKPT_PATH/train.opts \

@@ -93,7 +93,9 @@ class SEGAN(Model):
                                skip_init=opts.skip_init,
                                skip_type=opts.skip_type,
                                skip_merge=opts.skip_merge,
-                               skip_kwidth=opts.skip_kwidth)
+                               skip_kwidth=opts.skip_kwidth,
+                               sinc_conv=opts.sinc_conv
+                               )
         else:
             self.G = generator
         self.G.apply(weights_init)

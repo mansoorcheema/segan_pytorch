@@ -71,7 +71,7 @@ class Discriminator(Model):
                  norm_type='bnorm',
                  bias=True,
                  phase_shift=None, 
-                 sinc_conv=False):
+                 sinc_conv=True):
         super().__init__(name='Discriminator')
         # phase_shift randomly occurs within D layers
         # as proposed in https://arxiv.org/pdf/1802.04208.pdf
@@ -94,7 +94,7 @@ class Discriminator(Model):
             ninp = fmaps[0]
             fmaps = fmaps[1:]
         self.enc_blocks = nn.ModuleList()
-        for pi, (fmap, pool) in enumerate(zip(fmaps,
+        for py, (fmap, pool) in enumerate(zip(fmaps,
                                               poolings),
                                           start=1):
             enc_block = GConv1DBlock(

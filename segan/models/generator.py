@@ -94,6 +94,7 @@ class Generator(Model):
                  norm_type=None,
                  skip_merge='sum',
                  skip_kwidth=11,
+                 sinc_conv=True,
                  name='Generator'):
         super().__init__(name=name)
         self.skip = skip
@@ -108,6 +109,16 @@ class Generator(Model):
         assert isinstance(kwidth, list), type(kwidth)
         skips = {}
         ninp = ninputs
+
+        # # SincNet as proposed in 
+        # # https://arxiv.org/abs/1808.00158
+        # if sinc_conv:
+        #     # build sincnet module as first layer
+        #     self.sinc_conv = SincConv(fmaps[0],
+        #                               251, 16e3, padding='SAME')
+        #     ninp = fmaps[0]
+        #     fmaps = fmaps[1:]
+
         for pi, (fmap, pool, kw) in enumerate(zip(fmaps, poolings, kwidth),
                                               start=1):
             if skip and pi < len(fmaps):
@@ -121,11 +132,20 @@ class Generator(Model):
                 l_i = pi - 1
                 skips[l_i] = {'alpha':gskip}
                 setattr(self, 'alpha_{}'.format(l_i), skips[l_i]['alpha'])
-            enc_block = GConv1DBlock(
-                ninp, fmap, kw, stride=pool, bias=bias,
-                norm_type=norm_type
-            )
-            self.enc_blocks.append(enc_block)
+            
+            # SincNet as proposed in 
+            # https://arxiv.org/abs/1808.00158
+            if sinc_conv and pi == 1:
+                # build sincnet module as first layer
+                self.sinc_conv = SincConv(fmaps[0], 101, 16e3, padding='SAME')
+                self.enc_blocks.append(self.sinc_conv)
+
+            else:
+                enc_block = GConv1DBlock(
+                    ninp, fmap, kw, stride=pool, bias=bias,
+                    norm_type=norm_type
+                )
+                self.enc_blocks.append(enc_block)
             ninp = fmap
 
         self.skips = skips
@@ -180,9 +200,21 @@ class Generator(Model):
     def forward(self, x, z=None, ret_hid=False):
         hall = {}
         hi = x
+
+        # if hasattr(self, 'sinc_conv'):
+        #     hi = self.sinc_conv(hi)
+
         skips = self.skips
         for l_i, enc_layer in enumerate(self.enc_blocks):
-            hi, linear_hi = enc_layer(hi, True)
+            # if sinc conv is set for 1st layer. Note: it is also
+            # added to self.enc_blocks
+            if hasattr(self, 'sinc_conv') and l_i ==0:
+                hi = self.sinc_conv(hi)
+                # todo - try adding prelu activation after hi as
+                # other enc_layers in self.enc_blocks do
+                linear_hi = hi
+            else:
+                hi, linear_hi = enc_layer(hi, True)
             #print('ENC {} hi size: {}'.format(l_i, hi.size()))
                     #print('Adding skip[{}]={}, alpha={}'.format(l_i,
                     #                                            hi.size(),
