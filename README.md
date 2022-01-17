@@ -26,9 +26,13 @@ The voicing/dewhispering audio samples can be found in the [whispersegan samples
 ## Models
 
 We extented SEGAN+, an improved version of SEGAN [1], and introduce following Models
-* Sinc Convolution based discriminator
-* PASE based Discriminator and standard SEGAN+ discriminator
-Both Models share standard SEGAN Generator
+* Sinc Convolution [3] based discriminator
+* PASE [4] based Discriminator
+
+
+Both Models use standard SEGAN Generator
+
+> **_NOTE:_**  A sinc convolution based Generator and Discrimininator GAN is accessible at separate branch https://github.com/mansoorcheema/segan_pytorch/tree/sinc_generator.
 
 ### SEGAN+ Generator
 
