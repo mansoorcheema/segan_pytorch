@@ -110,15 +110,6 @@ class Generator(Model):
         skips = {}
         ninp = ninputs
 
-        # # SincNet as proposed in 
-        # # https://arxiv.org/abs/1808.00158
-        # if sinc_conv:
-        #     # build sincnet module as first layer
-        #     self.sinc_conv = SincConv(fmaps[0],
-        #                               251, 16e3, padding='SAME')
-        #     ninp = fmaps[0]
-        #     fmaps = fmaps[1:]
-
         for pi, (fmap, pool, kw) in enumerate(zip(fmaps, poolings, kwidth),
                                               start=1):
             if skip and pi < len(fmaps):
@@ -135,6 +126,8 @@ class Generator(Model):
             
             # SincNet as proposed in 
             # https://arxiv.org/abs/1808.00158
+            # Setup sinc convolution layer as feature
+            # extractor from raw wavelets from 1st layer(pi=1)
             if sinc_conv and pi == 1:
                 # build sincnet module as first layer
                 self.sinc_conv = SincConv(fmaps[0], 101, 16e3, padding='SAME')
@@ -206,19 +199,16 @@ class Generator(Model):
 
         skips = self.skips
         for l_i, enc_layer in enumerate(self.enc_blocks):
-            # if sinc conv is set for 1st layer. Note: it is also
-            # added to self.enc_blocks
+            # If sinc conv is set for 1st layer, perform a sinc convolution.
+            #  Note: it is also added to self.enc_blocks
             if hasattr(self, 'sinc_conv') and l_i ==0:
                 hi = self.sinc_conv(hi)
-                # todo - try adding prelu activation after hi as
+                # suggestion - try adding prelu activation after hi as
                 # other enc_layers in self.enc_blocks do
                 linear_hi = hi
             else:
                 hi, linear_hi = enc_layer(hi, True)
-            #print('ENC {} hi size: {}'.format(l_i, hi.size()))
-                    #print('Adding skip[{}]={}, alpha={}'.format(l_i,
-                    #                                            hi.size(),
-                    #                                            hi.size(1)))
+            
             if self.skip and l_i < (len(self.enc_blocks) - 1):
                 skips[l_i]['tensor'] = linear_hi
             if ret_hid:
@@ -244,15 +234,8 @@ class Generator(Model):
             if self.skip and enc_layer_idx in self.skips and \
             self.dec_poolings[l_i] > 1:
                 skip_conn = skips[enc_layer_idx]
-                #hi = self.skip_merge(skip_conn, hi)
-                #print('Merging  hi {} with skip {} of hj {}'.format(hi.size(),
-                #                                                    l_i,
-                #                                                    skip_conn['tensor'].size()))
                 hi = skip_conn['alpha'](skip_conn['tensor'], hi)
-            #print('DEC in size after skip and z_all: ', hi.size())
-            #print('decoding layer {} with input {}'.format(l_i, hi.size()))
             hi = dec_layer(hi)
-            #print('decoding layer {} output {}'.format(l_i, hi.size()))
             enc_layer_idx -= 1
             if ret_hid:
                 hall['dec_{}'.format(l_i)] = hi
