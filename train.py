@@ -137,7 +137,7 @@ if __name__ == '__main__':
                              'is an unstable and slow process though, so we'
                              'avoid patience by setting it high atm (Def: 100).'
                        )
-    parser.add_argument('--batch_size', type=int, default=100)
+    parser.add_argument('--batch_size', type=int, default=50)
     parser.add_argument('--save_freq', type=int, default=50,
                         help="Batch save freq (Def: 50).")
     parser.add_argument('--slice_size', type=int, default=16384)
@@ -242,7 +242,8 @@ if __name__ == '__main__':
                         'be: (1) snorm, (2) bnorm or (3) none '
                         '(Def: bnorm).')
     parser.add_argument('--phase_shift', type=int, default=5)
-    parser.add_argument('--sinc_conv', action='store_true', default=False)
+    parser.add_argument('--sinc_conv', action='store_true', default=False,  help='Use sinc convolutions for discriminator')
+    parser.add_argument('--pase_disc', action='store_true', default=False, help='Use PASE feature extractor for discriminator')
 
     opts = parser.parse_args()
     opts.bias = not opts.no_bias

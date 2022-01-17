@@ -107,7 +107,8 @@ class SEGAN(Model):
                                    pool_slen=opts.dpool_slen, 
                                    norm_type=opts.dnorm_type,
                                    phase_shift=opts.phase_shift,
-                                   sinc_conv=opts.sinc_conv)
+                                   sinc_conv=opts.sinc_conv,
+                                   pase_net=opts.pase_disc)
         else:
             self.D = discriminator
         self.D.apply(weights_init)
@@ -222,7 +223,7 @@ class SEGAN(Model):
             Dopt = optim.RMSprop(self.D.parameters(), lr=opts.d_lr)
         elif opts.opt == 'adam':
             Gopt = optim.Adam(self.G.parameters(), lr=opts.g_lr, betas=(0, 0.9))
-            Dopt = optim.Adam(self.D.parameters(), lr=opts.d_lr, betas=(0, 0.9))
+            Dopt = optim.RMSprop(self.D.parameters(), lr=opts.d_lr)
         else:
             raise ValueError('Unrecognized optimizer {}'.format(opts.opt))
         return Gopt, Dopt
