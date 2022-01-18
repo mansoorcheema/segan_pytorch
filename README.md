@@ -54,13 +54,7 @@ done
 cd ..
 ```
 Now the downsampled wav clean training files should be found in `clean_trainset_wav_16k` directory. Follow the same approach to downsample the remaining parts. 
-## Audio Samples
 
-|Noisy| SEGAN+      | SEGAN+ Sinc | SEGAN+ Sinc*| SEGAN+ PASE  |
-|---| ----------- | ----------- |----------- |----------- |
-|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-segan+.wav)      |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc-disc.wav)        |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc_disc_and_gen.wav)   |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-pase-disc.wav) |
-|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-segan+.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc-disc.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc_disc__and_gen.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-pase-disc.wav)  |
-> **_NOTE:_**  * Generator + Discriminator.
 ## Models
 
 We extented SEGAN+, an improved version of SEGAN [1], and introduce the following Models
@@ -82,6 +76,15 @@ Both Models use standard SEGAN Generator
 ### PASE Discriminator
 ![pase_disc](https://user-images.githubusercontent.com/10983181/149784688-d1c25049-28f4-4359-baab-6c8c86a2784e.png)
 
+## Audio Samples
+A few enhanced samples providing a qualitative comparison of the [speech enhancement models](#Models) are provided below:
+
+|Noisy| SEGAN+      | SEGAN+ Sinc | SEGAN+ Sinc*| SEGAN+ PASE  |
+|---| ----------- | ----------- |----------- |----------- |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-segan+.wav)      |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc-disc.wav)        |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc_disc_and_gen.wav)   |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-pase-disc.wav) |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-segan+.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc-disc.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc_disc__and_gen.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-pase-disc.wav)  |
+> **_NOTE:_**  * Generator + Discriminator.
+> 
 ## Training
 To train these models, the following command should be ran. For using **sinc convolution** for discriminator, provide argument `--sinc_conv`:
 ```
