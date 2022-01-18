@@ -1,7 +1,8 @@
 # Speech Enhancement Generative Adversarial Network in PyTorch
+## Getting started
 
 ### Requirements
-
+Python 3.6.9 or greater is required with the following packages
 ```
 SoundFile==0.10.2
 scipy==1.1.0
@@ -14,14 +15,40 @@ numpy==1.14.3
 pyfftw==0.10.4
 tensorboardX==1.4
 torchvision==0.2.1
+audioread==2.1.9
 ```
-Ahoprocessing tools (`ahoproc_tools`) is also needed, and the public repo is found [here](git@github.com:santi-pdp/ahoproc_tools.git).
+Ahoprocessing tools (`ahoproc_tools`) is also needed, and the public repo is found [here](https://github.com/santi-pdp/ahoproc_tools).
+### Installation
+#### Clone repository
+Clone the GitHub repo using
+```bash
+git clone https://github.com/mansoorcheema/segan_pytorch.git
+```
+#### Install requirements
+The requirements can be installed individually using `pip install <package-name> <package-version>` (preferred) or install all together using requirements.txt in the cloded repository with the command:
+```bash
+pip install -r requirements.txt
+```
+### Dataset
+The speech enhancement dataset used in this work [(Valentini et al. 2016)](http://ssw9.net/papers/ssw9_PS2-4_Valentini-Botinhao.pdf) can be found in [Edinburgh DataShare](http://datashare.is.ed.ac.uk/handle/10283/1942). After downloading the noisy and clean datasets convert the wav files from 48 khz to 16 khz using following steps. For simplicity, extract the downloaded zipped files in data folder(create new folder) in the main directory. 
 
-### Audio Samples
-
-Latest denoising audio samples with baselines can be found in the [segan+ samples website](http://veu.talp.cat/seganp/). SEGAN is the vanilla SEGAN version (like the one in TensorFlow repo), whereas SEGAN+ is the shallower improved version included as default parameters of this repo.
-
-The voicing/dewhispering audio samples can be found in the [whispersegan samples website](http://veu.talp.cat/whispersegan). Artifacts can now be palliated a bit more with `--interf_pair` fake signals, more data than the one we had available (just 20 mins with 1 speaker per model) and longer training session by iterating more than `100 epoch`.
+Move to the directory where you downloaded the data.
+```bash
+cd data
+```
+Create a folder to store the downsampled clean training data
+```bash
+mkdir -p clean_trainset_wav_16k 
+```
+Move to the directoy containing the clean wav files, assuming they were extracted to `clean_trainset_wav` and downsample to 16 khz using the following commands
+```bash
+cd clean_trainset_wav
+ls *.wav | while read name; do
+    sox $name -r 16k ../clean_trainset_wav_16k/$name
+done
+cd ..
+```
+Now the downsampled wav clean training files should be found in `clean_trainset_wav_16k` directory. Follow the same approach to downsample the remaining  parts. 
 
 ## Models
 
@@ -43,7 +70,7 @@ Both Models use standard SEGAN Generator
 ### PASE Discriminator
 ![pase_disc](https://user-images.githubusercontent.com/10983181/149784688-d1c25049-28f4-4359-baab-6c8c86a2784e.png)
 
-### Usage
+## Training
 To train these models, the following command should be ran. For using **sinc convolution** for discriminator, provide argument `--sinc_conv`:
 ```
 
@@ -67,6 +94,7 @@ Read `run_segan+_train.sh` for more guidance. This will use the default paramete
 
 Cleaning files is done by specifying the generator weights checkpoint, its config file from training and appropriate paths for input and output files (Use `soundfile` wav writer backend (recommended) specifying the `--soundfile` flag):
 
+## Enhancement
 ```
 python clean.py --g_pretrained_ckpt ckpt_segan+/<weights_ckpt_for_G> \
 		--cfg_file ckpt_segan+/train.opts --synthesis_path enhanced_results \
@@ -76,10 +104,10 @@ python clean.py --g_pretrained_ckpt ckpt_segan+/<weights_ckpt_for_G> \
 Read `run_segan+_clean.sh` for more guidance.
 
 
-### Credits:
+## Credits:
 
 1. [SEGAN: Speech Enhancement Generative Adversarial Network (Pascual et al. 2017)](https://arxiv.org/abs/1703.09452)
 2. [Language and Noise Transfer in Speech Enhancement GAN (Pascual et al. 2018)](https://arxiv.org/abs/1712.06340)
-3. [Learning Problem-agnostic Speech Representations from Multiple Self-supervised Tasks(Pascual et al. 2019)](https://arxiv.org/abs/1904.03416)
-4. [Speaker Recognition from Raw Waveform with SincNet(Ravanelli, et al. 2018)](https://arxiv.org/abs/1808.00158)
+3. [Speaker Recognition from Raw Waveform with SincNet(Ravanelli, et al. 2018)](https://arxiv.org/abs/1808.00158)
+4. [Learning Problem-agnostic Speech Representations from Multiple Self-supervised Tasks(Pascual et al. 2019)](https://arxiv.org/abs/1904.03416)
  
