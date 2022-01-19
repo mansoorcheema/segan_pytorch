@@ -106,5 +106,4 @@ venv.bak/
 # data and checkpoints
 data*
 ckpt*
-*.wav
 *ckpt

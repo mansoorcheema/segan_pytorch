@@ -1,4 +1,5 @@
 
+
 # Speech Enhancement Generative Adversarial Network in PyTorch
 ## Getting started
 
@@ -20,19 +21,25 @@ audioread==2.1.9
 yapf==0.31.0
 setuptools==54.2.0
 ```
-Ahoprocessing tools (`ahoproc_tools`) is also needed, and the public repo is found [here](https://github.com/santi-pdp/ahoproc_tools).
+Ahoprocessing tools (`ahoproc_tools`) is also needed, and the public repository is found [here](https://github.com/santi-pdp/ahoproc_tools).
 ### Installation
 #### Clone repository
-Clone the GitHub repo using
+Clone the GitHub repository using
 ```bash
 git clone https://github.com/mansoorcheema/segan_pytorch.git
 ```
 It will fetch the code at the current path and create a directory `segan_pytorch`.
 #### Install requirements
-The requirements can be installed individually using `pip install <package-name> <package-version>` (preferred) or install all together using requirements.txt in the cloned repository with the command:
+The requirements can be installed individually using `pip install <package-name> <package-version>` (preferred) or installed collectively from requirements.txt file using the command:
 ```bash
 cd segan_pytorch
 pip install -r requirements.txt
+```
+To install `ahoproc_tools` from the cloned repository, follow the commands
+```bash
+cd ahoproc_tools # switch to the repository folder
+python setup.py build # compile
+python setup.py install # install the python extension
 ```
 ### Dataset
 The speech enhancement dataset used in this work [(Valentini et al. 2016)](http://ssw9.net/papers/ssw9_PS2-4_Valentini-Botinhao.pdf) can be found in [Edinburgh DataShare](http://datashare.is.ed.ac.uk/handle/10283/1942). After downloading the noisy and clean datasets convert the wav files from 48 khz to 16 khz using the following steps. For simplicity, extract the downloaded zipped files in the data folder(create new folder) in the main directory. 
@@ -53,14 +60,13 @@ ls *.wav | while read name; do
 done
 cd ..
 ```
-Now the downsampled wav clean training files should be found in `clean_trainset_wav_16k` directory. Follow the same approach to downsample the remaining parts. 
+Now the downsampled wav clean training files can be found in `clean_trainset_wav_16k` directory. Follow the same approach to down sample the noisy wav files. 
 
 ## Models
 
 We extented SEGAN+, an improved version of SEGAN [1], and introduce the following Models
 * Sinc Convolution [3] based discriminator
 * PASE [4] based Discriminator
-* Baseline SEGAN+ [1]
 
 
 Both Models use standard SEGAN Generator
@@ -77,39 +83,43 @@ Both Models use standard SEGAN Generator
 ![pase_disc](https://user-images.githubusercontent.com/10983181/149784688-d1c25049-28f4-4359-baab-6c8c86a2784e.png)
 
 ## Audio Samples
-A few enhanced samples providing a qualitative comparison of the [speech enhancement models](#Models) are provided below:
+A few enhanced samples providing a qualitative analysis of the [speech enhancement models](#Models) are provided below:
 
 |Noisy| SEGAN+      | SEGAN+ Sinc | SEGAN+ Sinc*| SEGAN+ PASE  |
 |---| ----------- | ----------- |----------- |----------- |
-|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-segan+.wav)      |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc-disc.wav)        |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-sinc_disc_and_gen.wav)   |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p232_006-pase-disc.wav) |
-|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-segan+.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc-disc.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-sinc_disc__and_gen.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/p257_430-pase-disc.wav)  |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/noisy/p232_006-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/segan+/p232_006-segan+.wav)      |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc/p232_006-sinc-disc.wav)        |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc_and_gen/p232_006-sinc_disc_and_gen.wav)   |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/pace_disc/p232_006-pase-disc.wav) |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/noisy/p257_430-noisy.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/segan+/p257_430-segan+.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc/p257_430-sinc-disc.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc_and_gen/p257_430-sinc_disc__and_gen.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/pase_disc/p257_430-pase-disc.wav)  |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/noisy/p232_001.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/segan+/p232_001.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc/p232_001.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc_and_gen/p232_001.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/pase_disc/p232_001.wav)  |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/noisy/p232_361.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/segan+/p232_361.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc/p232_361.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc_and_gen/p232_361.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/pase_disc/p232_361.wav)  |
+|[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/noisy/p257_010.wav)| [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/segan+/p257_010.wav)     | [Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc/p257_010.wav)         |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/sinc_disc_and_gen/p257_010.wav)  |[Play](https://raw.githubusercontent.com/mansoorcheema/segan_pytorch/master/enhanced_samples/pase_disc/p257_010.wav)  |
 > **_NOTE:_**  * Generator + Discriminator.
 > 
 ## Training
 To train these models, the following command should be ran. For using **sinc convolution** for discriminator, provide argument `--sinc_conv`:
 ```
 
-python -u train.py --save_path ckpt_segan+pase \
+python -u train.py --save_path ckpt_segan \
                    --clean_trainset data/clean_trainset_wav_16k \
-		   --noisy_trainset data/noisy_trainset_wav_16k \
-		   --cache_dir data_tmp --no_train_gen \
-		   --batch_size 50 --no_bias --sinc_conv
+		           --noisy_trainset data/noisy_trainset_wav_16k \
+		           --cache_dir data_tmp --no_train_gen \
+		           --batch_size 100 --no_bias --sinc_conv
 ```
 
 Similarly provide `--pase_disc` for using **PASE** based discriminator:
 ```
 
-python -u train.py --save_path ckpt_segan+pase \
+python -u train.py --save_path ckpt_segan \
                    --clean_trainset data/clean_trainset_wav_16k \
-		   --noisy_trainset data/noisy_trainset_wav_16k \
-		   --cache_dir data_tmp --no_train_gen \
-		   --batch_size 50 --no_bias --pase_disc
+		           --noisy_trainset data/noisy_trainset_wav_16k \
+		           --cache_dir data_tmp --no_train_gen \
+		           --batch_size 50 --no_bias --pase_disc
 ```
 Read `run_segan+_train.sh` for more guidance. This will use the default parameters to structure both G and D, but they can be tunned with many options. For example, one can play with `--d_pretrained_ckpt` and/or `--g_pretrained_ckpt` to specify a departure pre-train checkpoint to fine-tune some characteristics of our enhancement system, like language, as in [2].
 
-Cleaning files is done by specifying the generator weights checkpoint, its config file from training and appropriate paths for input and output files (Use `soundfile` wav writer backend (recommended) specifying the `--soundfile` flag):
+
 
 ## Enhancement
+Cleaning files is done by specifying the generator weights checkpoint, its config file from training and appropriate paths for input and output files (Use `soundfile` wav writer backend (recommended) specifying the `--soundfile` flag):
 ```
 python clean.py --g_pretrained_ckpt ckpt_segan+/<weights_ckpt_for_G> \
 		--cfg_file ckpt_segan+/train.opts --synthesis_path enhanced_results \
@@ -119,7 +129,7 @@ python clean.py --g_pretrained_ckpt ckpt_segan+/<weights_ckpt_for_G> \
 Read `run_segan+_clean.sh` for more guidance.
 
 
-## Credits:
+## References:
 
 1. [SEGAN: Speech Enhancement Generative Adversarial Network (Pascual et al. 2017)](https://arxiv.org/abs/1703.09452)
 2. [Language and Noise Transfer in Speech Enhancement GAN (Pascual et al. 2018)](https://arxiv.org/abs/1712.06340)
